@@ -184,7 +184,7 @@ module Legacy
           )
         when :google_app_default
           require 'googleauth'
-          new_authorization = Legacy::Google::Auth.get_application_default
+          new_authorization = Google::Auth.get_application_default
   
         when :oauth_2
           require 'signet/oauth_2/client'
