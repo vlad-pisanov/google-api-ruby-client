@@ -4,7 +4,7 @@ require 'legacy/google/api_client'
 require 'legacy/google/api_client/version'
 
 describe Legacy::Google::APIClient::FileStore do
-  let(:root_path) { File.expand_path(File.join(__FILE__, '..','..','..', '..','..')) }
+  let(:root_path) { File.expand_path(File.join(__FILE__, '..','..','..', '..','..','..')) }
   let(:json_file) { File.expand_path(File.join(root_path, 'fixtures', 'files', 'auth_stored_credentials.json')) }
 
   let(:credentials_hash) {{

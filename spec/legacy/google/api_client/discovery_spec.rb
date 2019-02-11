@@ -23,7 +23,7 @@ require 'compat/multi_json'
 require 'signet/oauth_1/client'
 require 'legacy/google/api_client'
 
-fixtures_path = File.expand_path('../../../fixtures', __FILE__)
+fixtures_path = File.expand_path('../../../../fixtures', __FILE__)
 
 RSpec.describe Legacy::Google::APIClient do
   include ConnectionHelpers

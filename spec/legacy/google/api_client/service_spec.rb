@@ -19,7 +19,7 @@ require 'spec_helper'
 require 'legacy/google/api_client'
 require 'legacy/google/api_client/service'
 
-fixtures_path = File.expand_path('../../../fixtures', __FILE__)
+fixtures_path = File.expand_path('../../../../fixtures', __FILE__)
 
 RSpec.describe Legacy::Google::APIClient::Service do
   include ConnectionHelpers

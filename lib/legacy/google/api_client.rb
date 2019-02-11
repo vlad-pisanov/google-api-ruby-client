@@ -130,7 +130,7 @@ module Legacy
         @discovery_uris = {}
         @discovery_documents = {}
         @discovered_apis = {}
-        ca_file = options[:ca_file] || File.expand_path('../../cacerts.pem', __FILE__)
+        ca_file = options[:ca_file] || File.expand_path('../../../cacerts.pem', __FILE__)
         self.connection = Faraday.new do |faraday|
           faraday.response :charset if options[:force_encoding]
           faraday.response :gzip

@@ -16,7 +16,7 @@ require 'spec_helper'
 
 require 'legacy/google/api_client'
 
-fixtures_path = File.expand_path('../../../fixtures', __FILE__)
+fixtures_path = File.expand_path('../../../../fixtures', __FILE__)
 
 RSpec.describe Legacy::Google::APIClient::KeyUtils do
   it 'should read PKCS12 files from the filesystem' do
