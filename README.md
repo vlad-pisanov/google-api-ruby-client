@@ -32,9 +32,9 @@ $ gem install google-api-client
 ## Example Usage
 
 ```ruby
-require 'google/api_client'
-require 'google/api_client/client_secrets'
-require 'google/api_client/auth/installed_app'
+require 'legacy/google/api_client'
+require 'legacy/google/api_client/client_secrets'
+require 'legacy/google/api_client/auth/installed_app'
 
 # Initialize the client.
 client = Legacy::Google::APIClient.new(

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'google/api_client/auth/pkcs12'
-require 'google/api_client/auth/jwt_asserter'
-require 'google/api_client/auth/key_utils'
-require 'google/api_client/auth/compute_service_account'
-require 'google/api_client/auth/storage'
-require 'google/api_client/auth/storages/redis_store'
-require 'google/api_client/auth/storages/file_store'
+require 'legacy/google/api_client/auth/pkcs12'
+require 'legacy/google/api_client/auth/jwt_asserter'
+require 'legacy/google/api_client/auth/key_utils'
+require 'legacy/google/api_client/auth/compute_service_account'
+require 'legacy/google/api_client/auth/storage'
+require 'legacy/google/api_client/auth/storages/redis_store'
+require 'legacy/google/api_client/auth/storages/file_store'

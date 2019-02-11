@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-require 'google/api_client/discovery/api'
-require 'google/api_client/discovery/resource'
-require 'google/api_client/discovery/method'
-require 'google/api_client/discovery/schema'
+require 'legacy/google/api_client/discovery/api'
+require 'legacy/google/api_client/discovery/resource'
+require 'legacy/google/api_client/discovery/method'
+require 'legacy/google/api_client/discovery/schema'
