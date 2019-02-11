@@ -18,7 +18,7 @@ require 'spec_helper'
 
 require 'legacy/google/api_client/client_secrets'
 
-FIXTURES_PATH = File.expand_path('../../../fixtures', __FILE__)
+FIXTURES_PATH = File.expand_path('../../../../fixtures', __FILE__)
 
 RSpec.describe Legacy::Google::APIClient::ClientSecrets do
   
