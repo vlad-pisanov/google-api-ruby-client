@@ -12,16 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'google/api_client/request'
+require 'legacy/google/api_client/request'
 
-module Google
-  class APIClient
-    ##
-    # Subclass of Request for backwards compatibility with pre-0.5.0 versions of the library
-    # 
-    # @deprecated
-    #   use {Google::APIClient::Request} instead
-    class Reference < Request
+module Legacy
+  module Google
+    class APIClient
+      ##
+      # Subclass of Request for backwards compatibility with pre-0.5.0 versions of the library
+      # 
+      # @deprecated
+      #   use {Legacy::Google::APIClient::Request} instead
+      class Reference < Request
+      end
     end
   end
 end

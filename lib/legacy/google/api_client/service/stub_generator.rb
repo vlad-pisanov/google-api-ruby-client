@@ -14,42 +14,44 @@
 
 require 'active_support/inflector'
 
-module Google
-  class APIClient
-    class Service
-      ##
-      # Auxiliary mixin to generate resource and method stubs.
-      # Used by the Service and Service::Resource classes to generate both
-      # top-level and nested resources and methods.
-      module StubGenerator
-        def generate_call_stubs(service, root)
-          metaclass = (class << self; self; end)
-
-          # Handle resources.
-          root.discovered_resources.each do |resource|
-            method_name = ActiveSupport::Inflector.underscore(resource.name).to_sym
-            if !self.respond_to?(method_name)
-              metaclass.send(:define_method, method_name) do
-                Google::APIClient::Service::Resource.new(service, resource)
+module Legacy
+  module Google
+    class APIClient
+      class Service
+        ##
+        # Auxiliary mixin to generate resource and method stubs.
+        # Used by the Service and Service::Resource classes to generate both
+        # top-level and nested resources and methods.
+        module StubGenerator
+          def generate_call_stubs(service, root)
+            metaclass = (class << self; self; end)
+  
+            # Handle resources.
+            root.discovered_resources.each do |resource|
+              method_name = ActiveSupport::Inflector.underscore(resource.name).to_sym
+              if !self.respond_to?(method_name)
+                metaclass.send(:define_method, method_name) do
+                  Legacy::Google::APIClient::Service::Resource.new(service, resource)
+                end
               end
             end
-          end
-
-          # Handle methods.
-          root.discovered_methods.each do |method|
-            method_name = ActiveSupport::Inflector.underscore(method.name).to_sym
-            if !self.respond_to?(method_name)
-              metaclass.send(:define_method, method_name) do |*args|
-                if args.length > 1
-                  raise ArgumentError,
-                    "wrong number of arguments (#{args.length} for 1)"
-                elsif !args.first.respond_to?(:to_hash) && !args.first.nil?
-                  raise ArgumentError,
-                    "expected parameter Hash, got #{args.first.class}"
-                else
-                  return Google::APIClient::Service::Request.new(
-                    service, method, args.first
-                  )
+  
+            # Handle methods.
+            root.discovered_methods.each do |method|
+              method_name = ActiveSupport::Inflector.underscore(method.name).to_sym
+              if !self.respond_to?(method_name)
+                metaclass.send(:define_method, method_name) do |*args|
+                  if args.length > 1
+                    raise ArgumentError,
+                      "wrong number of arguments (#{args.length} for 1)"
+                  elsif !args.first.respond_to?(:to_hash) && !args.first.nil?
+                    raise ArgumentError,
+                      "expected parameter Hash, got #{args.first.class}"
+                  else
+                    return Legacy::Google::APIClient::Service::Request.new(
+                      service, method, args.first
+                    )
+                  end
                 end
               end
             end

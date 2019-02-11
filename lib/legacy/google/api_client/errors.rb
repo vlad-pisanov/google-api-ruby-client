@@ -12,54 +12,55 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-module Google
-  class APIClient
-    ##
-    # An error which is raised when there is an unexpected response or other
-    # transport error that prevents an operation from succeeding.
-    class TransmissionError < StandardError
-      attr_reader :result
-      def initialize(message = nil, result = nil)
-        super(message)
-        @result = result
+module Legacy
+  module Google
+    class APIClient
+      ##
+      # An error which is raised when there is an unexpected response or other
+      # transport error that prevents an operation from succeeding.
+      class TransmissionError < StandardError
+        attr_reader :result
+        def initialize(message = nil, result = nil)
+          super(message)
+          @result = result
+        end
       end
-    end
-
-    ##
-    # An exception that is raised if a redirect is required
-    #
-    class RedirectError < TransmissionError
-    end
-
-    ##
-    # An exception that is raised if a method is called with missing or
-    # invalid parameter values.
-    class ValidationError < StandardError
-    end
-
-    ##
-    # A 4xx class HTTP error occurred.
-    class ClientError < TransmissionError
-    end
-
-    ##
-    # A 401 HTTP error occurred.
-    class AuthorizationError < ClientError
-    end
-
-    ##
-    # A 5xx class HTTP error occurred.
-    class ServerError < TransmissionError
-    end
-
-    ##
-    # An exception that is raised if an ID token could not be validated.
-    class InvalidIDTokenError < StandardError
-    end
-
-    # Error class for problems in batch requests.
-    class BatchError < StandardError
+  
+      ##
+      # An exception that is raised if a redirect is required
+      #
+      class RedirectError < TransmissionError
+      end
+  
+      ##
+      # An exception that is raised if a method is called with missing or
+      # invalid parameter values.
+      class ValidationError < StandardError
+      end
+  
+      ##
+      # A 4xx class HTTP error occurred.
+      class ClientError < TransmissionError
+      end
+  
+      ##
+      # A 401 HTTP error occurred.
+      class AuthorizationError < ClientError
+      end
+  
+      ##
+      # A 5xx class HTTP error occurred.
+      class ServerError < TransmissionError
+      end
+  
+      ##
+      # An exception that is raised if an ID token could not be validated.
+      class InvalidIDTokenError < StandardError
+      end
+  
+      # Error class for problems in batch requests.
+      class BatchError < StandardError
+      end
     end
   end
 end

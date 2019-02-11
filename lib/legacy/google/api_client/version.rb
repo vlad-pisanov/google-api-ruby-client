@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-module Google
-  class APIClient
-    module VERSION
-      MAJOR = 0
-      MINOR = 8
-      TINY  = 7
-      PATCH = nil
-      STRING = [MAJOR, MINOR, TINY, PATCH].compact.join('.')
+module Legacy
+  module Google
+    class APIClient
+      module VERSION
+        MAJOR = 0
+        MINOR = 8
+        TINY  = 7
+        PATCH = nil
+        STRING = [MAJOR, MINOR, TINY, PATCH].compact.join('.')
+      end
     end
   end
 end

@@ -16,62 +16,63 @@
 require 'addressable/uri'
 require 'addressable/template'
 
-require 'google/api_client/errors'
+require 'legacy/google/api_client/errors'
 
-
-module Google
-  class APIClient
-    ##
-    # Media upload elements for discovered methods
-    class MediaUpload
-
+module Legacy
+  module Google
+    class APIClient
       ##
-      # Creates a description of a particular method.
-      #
-      # @param [Google::APIClient::API] api
-      #    Base discovery document for the API
-      # @param [Addressable::URI] method_base
-      #   The base URI for the service.
-      # @param [Hash] discovery_document
-      #   The media upload section of the discovery document.
-      #
-      # @return [Google::APIClient::Method] The constructed method object.
-      def initialize(api, method_base, discovery_document)
-        @api = api
-        @method_base = method_base
-        @discovery_document = discovery_document
+      # Media upload elements for discovered methods
+      class MediaUpload
+  
+        ##
+        # Creates a description of a particular method.
+        #
+        # @param [Legacy::Google::APIClient::API] api
+        #    Base discovery document for the API
+        # @param [Addressable::URI] method_base
+        #   The base URI for the service.
+        # @param [Hash] discovery_document
+        #   The media upload section of the discovery document.
+        #
+        # @return [Legacy::Google::APIClient::Method] The constructed method object.
+        def initialize(api, method_base, discovery_document)
+          @api = api
+          @method_base = method_base
+          @discovery_document = discovery_document
+        end
+  
+        ##
+        # List of acceptable mime types
+        #
+        # @return [Array]
+        #   List of acceptable mime types for uploaded content
+        def accepted_types
+          @discovery_document['accept']
+        end
+  
+        ##
+        # Maximum size of an uplad
+        # TODO: Parse & convert to numeric value
+        #
+        # @return [String]
+        def max_size
+          @discovery_document['maxSize']
+        end
+  
+        ##
+        # Returns the URI template for the method.  A parameter list can be
+        # used to expand this into a URI.
+        #
+        # @return [Addressable::Template] The URI template.
+        def uri_template
+          return @uri_template ||= Addressable::Template.new(
+            @api.method_base.join(Addressable::URI.parse(@discovery_document['protocols']['simple']['path']))
+          )
+        end
+  
       end
-
-      ##
-      # List of acceptable mime types
-      #
-      # @return [Array]
-      #   List of acceptable mime types for uploaded content
-      def accepted_types
-        @discovery_document['accept']
-      end
-
-      ##
-      # Maximum size of an uplad
-      # TODO: Parse & convert to numeric value
-      #
-      # @return [String]
-      def max_size
-        @discovery_document['maxSize']
-      end
-
-      ##
-      # Returns the URI template for the method.  A parameter list can be
-      # used to expand this into a URI.
-      #
-      # @return [Addressable::Template] The URI template.
-      def uri_template
-        return @uri_template ||= Addressable::Template.new(
-          @api.method_base.join(Addressable::URI.parse(@discovery_document['protocols']['simple']['path']))
-        )
-      end
-
+  
     end
-
   end
 end

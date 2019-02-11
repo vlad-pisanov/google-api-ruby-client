@@ -15,13 +15,15 @@
 require 'faraday'
 require 'signet/oauth_2/client'
 
-module Google
-  class APIClient
-    class ComputeServiceAccount < Signet::OAuth2::Client
-      def fetch_access_token(options={})
-        connection = options[:connection] || Faraday.default_connection
-        response = connection.get 'http://metadata/computeMetadata/v1beta1/instance/service-accounts/default/token'
-        Signet::OAuth2.parse_credentials(response.body, response.headers['content-type'])
+module Legacy
+  module Google
+    class APIClient
+      class ComputeServiceAccount < Signet::OAuth2::Client
+        def fetch_access_token(options={})
+          connection = options[:connection] || Faraday.default_connection
+          response = connection.get 'http://metadata/computeMetadata/v1beta1/instance/service-accounts/default/token'
+          Signet::OAuth2.parse_credentials(response.body, response.headers['content-type'])
+        end
       end
     end
   end

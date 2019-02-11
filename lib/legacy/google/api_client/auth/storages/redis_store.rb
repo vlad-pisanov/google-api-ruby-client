@@ -14,40 +14,42 @@
 
 require 'json'
 
-module Google
-  class APIClient
-    class RedisStore
-
-      DEFAULT_REDIS_CREDENTIALS_KEY = "google_api_credentials"
-
-      attr_accessor :redis
-
-      ##
-      # Initializes the RedisStore object.
-      #
-      # @params [Object] Redis instance
-      def initialize(redis, key = nil)
-        @redis= redis
-        @redis_credentials_key = key
-      end
-
-      ##
-      # Attempt to read in credentials from redis.
-      def load_credentials
-        credentials = redis.get redis_credentials_key
-        JSON.parse(credentials) if credentials
-      end
-
-      def redis_credentials_key
-        @redis_credentials_key || DEFAULT_REDIS_CREDENTIALS_KEY
-      end
-
-      ##
-      # Write the credentials to redis.
-      #
-      # @params [Hash] credentials
-      def write_credentials(credentials_hash)
-        redis.set(redis_credentials_key, credentials_hash.to_json)
+module Legacy
+  module Google
+    class APIClient
+      class RedisStore
+  
+        DEFAULT_REDIS_CREDENTIALS_KEY = "google_api_credentials"
+  
+        attr_accessor :redis
+  
+        ##
+        # Initializes the RedisStore object.
+        #
+        # @params [Object] Redis instance
+        def initialize(redis, key = nil)
+          @redis= redis
+          @redis_credentials_key = key
+        end
+  
+        ##
+        # Attempt to read in credentials from redis.
+        def load_credentials
+          credentials = redis.get redis_credentials_key
+          JSON.parse(credentials) if credentials
+        end
+  
+        def redis_credentials_key
+          @redis_credentials_key || DEFAULT_REDIS_CREDENTIALS_KEY
+        end
+  
+        ##
+        # Write the credentials to redis.
+        #
+        # @params [Hash] credentials
+        def write_credentials(credentials_hash)
+          redis.set(redis_credentials_key, credentials_hash.to_json)
+        end
       end
     end
   end

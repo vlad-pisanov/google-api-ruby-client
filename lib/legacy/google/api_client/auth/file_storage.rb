@@ -16,43 +16,45 @@ require 'signet/oauth_2/client'
 require_relative 'storage'
 require_relative 'storages/file_store'
 
-module Google
-  class APIClient
-
-    ##
-    # Represents cached OAuth 2 tokens stored on local disk in a
-    # JSON serialized file. Meant to resemble the serialized format
-    # http://google-api-python-client.googlecode.com/hg/docs/epy/oauth2client.file.Storage-class.html
-    #
-    # @deprecated
-    #  Use {Google::APIClient::Storage} and {Google::APIClient::FileStore} instead
-    #
-    class FileStorage
-
-      attr_accessor :storage
-
-      def initialize(path)
-        store = Google::APIClient::FileStore.new(path)
-        @storage = Google::APIClient::Storage.new(store)
-        @storage.authorize
-      end
-
-      def load_credentials
-        storage.authorize
-      end
-
-      def authorization
-        storage.authorization
-      end
-
+module Legacy
+  module Google
+    class APIClient
+  
       ##
-      # Write the credentials to the specified file.
+      # Represents cached OAuth 2 tokens stored on local disk in a
+      # JSON serialized file. Meant to resemble the serialized format
+      # http://google-api-python-client.googlecode.com/hg/docs/epy/oauth2client.file.Storage-class.html
       #
-      # @param [Signet::OAuth2::Client] authorization
-      #    Optional authorization instance. If not provided, the authorization
-      #    already associated with this instance will be written.
-      def write_credentials(auth=nil)
-        storage.write_credentials(auth)
+      # @deprecated
+      #  Use {Legacy::Google::APIClient::Storage} and {Legacy::Google::APIClient::FileStore} instead
+      #
+      class FileStorage
+  
+        attr_accessor :storage
+  
+        def initialize(path)
+          store = Legacy::Google::APIClient::FileStore.new(path)
+          @storage = Legacy::Google::APIClient::Storage.new(store)
+          @storage.authorize
+        end
+  
+        def load_credentials
+          storage.authorize
+        end
+  
+        def authorization
+          storage.authorization
+        end
+  
+        ##
+        # Write the credentials to the specified file.
+        #
+        # @param [Signet::OAuth2::Client] authorization
+        #    Optional authorization instance. If not provided, the authorization
+        #    already associated with this instance will be written.
+        def write_credentials(auth=nil)
+          storage.write_credentials(auth)
+        end
       end
     end
   end

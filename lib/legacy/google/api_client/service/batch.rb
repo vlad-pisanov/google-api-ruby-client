@@ -12,99 +12,101 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'google/api_client/service/result'
-require 'google/api_client/batch'
+require 'legacy/google/api_client/service/result'
+require 'legacy/google/api_client/batch'
 
-module Google
-  class APIClient
-    class Service
-
-      ##
-      # Helper class to contain the result of an individual batched call.
-      #
-      class BatchedCallResult < Result
-        # @return [Fixnum] Index of the call
-        def call_index
-          return @base_result.response.call_id.to_i - 1
-        end
-      end
-
-      ##
-      #
-      #
-      class BatchRequest
+module Legacy
+  module Google
+    class APIClient
+      class Service
+  
         ##
-        # Creates a new batch request.
-        # This class shouldn't be instantiated directly, but rather through
-        # Service.batch.
+        # Helper class to contain the result of an individual batched call.
         #
-        # @param [Array] calls
-        #   List of Google::APIClient::Service::Request to be made.
-        # @param [Proc] block
-        #   Callback for every call's response. Won't be called if a call
-        #   defined a callback of its own.
+        class BatchedCallResult < Result
+          # @return [Fixnum] Index of the call
+          def call_index
+            return @base_result.response.call_id.to_i - 1
+          end
+        end
+  
+        ##
         #
-        # @yield [Google::APIClient::Service::Result]
-        #   block to be called when result ready
-        def initialize(service, calls, &block)
-          @service = service
-          @base_batch = Google::APIClient::BatchRequest.new
-          @global_callback = block if block_given?
-
-          if calls && calls.length > 0
-            calls.each do |call|
-              add(call)
+        #
+        class BatchRequest
+          ##
+          # Creates a new batch request.
+          # This class shouldn't be instantiated directly, but rather through
+          # Service.batch.
+          #
+          # @param [Array] calls
+          #   List of Legacy::Google::APIClient::Service::Request to be made.
+          # @param [Proc] block
+          #   Callback for every call's response. Won't be called if a call
+          #   defined a callback of its own.
+          #
+          # @yield [Legacy::Google::APIClient::Service::Result]
+          #   block to be called when result ready
+          def initialize(service, calls, &block)
+            @service = service
+            @base_batch = Legacy::Google::APIClient::BatchRequest.new
+            @global_callback = block if block_given?
+  
+            if calls && calls.length > 0
+              calls.each do |call|
+                add(call)
+              end
             end
           end
-        end
-
-        ##
-        # Add a new call to the batch request.
-        #
-        # @param [Google::APIClient::Service::Request] call
-        #   the call to be added.
-        # @param [Proc] block
-        #   callback for this call's response.
-        #
-        # @return [Google::APIClient::Service::BatchRequest]
-        #   the BatchRequest, for chaining
-        #
-        # @yield [Google::APIClient::Service::Result]
-        #   block to be called when result ready
-        def add(call, &block)
-          if !block_given? && @global_callback.nil?
-            raise BatchError, 'Request needs a block'
-          end
-          callback = block || @global_callback
-          base_call = {
-            :api_method => call.method,
-            :parameters => call.parameters
-          }
-          if call.respond_to? :body
-            if call.body.respond_to? :to_hash
-              base_call[:body_object] = call.body
-            else
-              base_call[:body] = call.body
+  
+          ##
+          # Add a new call to the batch request.
+          #
+          # @param [Legacy::Google::APIClient::Service::Request] call
+          #   the call to be added.
+          # @param [Proc] block
+          #   callback for this call's response.
+          #
+          # @return [Legacy::Google::APIClient::Service::BatchRequest]
+          #   the BatchRequest, for chaining
+          #
+          # @yield [Legacy::Google::APIClient::Service::Result]
+          #   block to be called when result ready
+          def add(call, &block)
+            if !block_given? && @global_callback.nil?
+              raise BatchError, 'Request needs a block'
             end
+            callback = block || @global_callback
+            base_call = {
+              :api_method => call.method,
+              :parameters => call.parameters
+            }
+            if call.respond_to? :body
+              if call.body.respond_to? :to_hash
+                base_call[:body_object] = call.body
+              else
+                base_call[:body] = call.body
+              end
+            end
+            @base_batch.add(base_call) do |base_result|
+              result = Legacy::Google::APIClient::Service::BatchedCallResult.new(
+                  call, base_result)
+              callback.call(result)
+            end
+            return self
           end
-          @base_batch.add(base_call) do |base_result|
-            result = Google::APIClient::Service::BatchedCallResult.new(
-                call, base_result)
-            callback.call(result)
+  
+          ##
+          # Executes the batch request.
+          def execute
+            @service.execute(self)
           end
-          return self
+  
+          attr_reader :base_batch
+  
         end
-
-        ##
-        # Executes the batch request.
-        def execute
-          @service.execute(self)
-        end
-
-        attr_reader :base_batch
-
+  
       end
-
     end
   end
 end

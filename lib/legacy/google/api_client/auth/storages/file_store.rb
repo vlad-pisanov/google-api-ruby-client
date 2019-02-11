@@ -14,43 +14,45 @@
 
 require 'json'
 
-module Google
-  class APIClient
-    ##
-    # Represents cached OAuth 2 tokens stored on local disk in a
-    # JSON serialized file. Meant to resemble the serialized format
-    # http://google-api-python-client.googlecode.com/hg/docs/epy/oauth2client.file.Storage-class.html
-    #
-    class FileStore
-
-      attr_accessor :path
-
+module Legacy
+  module Google
+    class APIClient
       ##
-      # Initializes the FileStorage object.
+      # Represents cached OAuth 2 tokens stored on local disk in a
+      # JSON serialized file. Meant to resemble the serialized format
+      # http://google-api-python-client.googlecode.com/hg/docs/epy/oauth2client.file.Storage-class.html
       #
-      # @param [String] path
-      #    Path to the credentials file.
-      def initialize(path)
-        @path= path
-      end
-
-      ##
-      # Attempt to read in credentials from the specified file.
-      def load_credentials
-        open(path, 'r') { |f| JSON.parse(f.read) }
-      rescue
-        nil
-      end
-
-      ##
-      # Write the credentials to the specified file.
-      #
-      # @param [Signet::OAuth2::Client] authorization
-      #    Optional authorization instance. If not provided, the authorization
-      #    already associated with this instance will be written.
-      def write_credentials(credentials_hash)
-        open(self.path, 'w+') do |f|
-          f.write(credentials_hash.to_json)
+      class FileStore
+  
+        attr_accessor :path
+  
+        ##
+        # Initializes the FileStorage object.
+        #
+        # @param [String] path
+        #    Path to the credentials file.
+        def initialize(path)
+          @path= path
+        end
+  
+        ##
+        # Attempt to read in credentials from the specified file.
+        def load_credentials
+          open(path, 'r') { |f| JSON.parse(f.read) }
+        rescue
+          nil
+        end
+  
+        ##
+        # Write the credentials to the specified file.
+        #
+        # @param [Signet::OAuth2::Client] authorization
+        #    Optional authorization instance. If not provided, the authorization
+        #    already associated with this instance will be written.
+        def write_credentials(credentials_hash)
+          open(self.path, 'w+') do |f|
+            f.write(credentials_hash.to_json)
+          end
         end
       end
     end
