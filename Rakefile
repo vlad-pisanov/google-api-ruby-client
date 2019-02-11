@@ -11,7 +11,7 @@ require File.join(File.dirname(__FILE__), 'lib/google/api_client', 'version')
 
 PKG_DISPLAY_NAME   = 'Google API Client'
 PKG_NAME           = PKG_DISPLAY_NAME.downcase.gsub(/\s/, '-')
-PKG_VERSION        = Google::APIClient::VERSION::STRING
+PKG_VERSION        = Legacy::Google::APIClient::VERSION::STRING
 PKG_FILE_NAME      = "#{PKG_NAME}-#{PKG_VERSION}"
 PKG_HOMEPAGE       = 'https://github.com/google/google-api-ruby-client'
 

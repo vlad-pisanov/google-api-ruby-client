@@ -40,7 +40,7 @@
 # 0.7.0
 * Remove CLI
 * Support for automatic retires & backoff. Off by default, enable by setting `retries` on `APIClient`
-* Experimental new interface (see `Google::APIClient::Service`)
+* Experimental new interface (see `Legacy::Google::APIClient::Service`)
 * Fix warnings when using Faraday separately
 * Support Google Compute Engine service accounts
 * Enable gzip compression for responses
