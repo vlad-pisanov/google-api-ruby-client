@@ -16,16 +16,16 @@
 
 require 'spec_helper'
 
-require 'google/api_client/service/simple_file_store'
+require 'legacy/google/api_client/service/simple_file_store'
 
-RSpec.describe Google::APIClient::Service::SimpleFileStore do
+RSpec.describe Legacy::Google::APIClient::Service::SimpleFileStore do
 
   FILE_NAME = 'test.cache'
 
   describe 'with no cache file' do
     before(:each) do
       File.delete(FILE_NAME) if File.exists?(FILE_NAME)
-      @cache = Google::APIClient::Service::SimpleFileStore.new(FILE_NAME)
+      @cache = Legacy::Google::APIClient::Service::SimpleFileStore.new(FILE_NAME)
     end
 
     it 'should return nil when asked if a key exists' do
@@ -64,7 +64,7 @@ RSpec.describe Google::APIClient::Service::SimpleFileStore do
   describe 'with an existing cache' do
     before(:each) do
       File.delete(FILE_NAME) if File.exists?(FILE_NAME)
-      @cache = Google::APIClient::Service::SimpleFileStore.new(FILE_NAME)
+      @cache = Legacy::Google::APIClient::Service::SimpleFileStore.new(FILE_NAME)
       @cache.write('existing_key', 'existing_value')
     end
 

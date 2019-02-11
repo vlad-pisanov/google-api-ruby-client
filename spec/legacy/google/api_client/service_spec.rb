@@ -16,31 +16,31 @@
 
 require 'spec_helper'
 
-require 'google/api_client'
-require 'google/api_client/service'
+require 'legacy/google/api_client'
+require 'legacy/google/api_client/service'
 
 fixtures_path = File.expand_path('../../../fixtures', __FILE__)
 
-RSpec.describe Google::APIClient::Service do
+RSpec.describe Legacy::Google::APIClient::Service do
   include ConnectionHelpers
 
   APPLICATION_NAME = 'API Client Tests'
 
   it 'should error out when called without an API name or version' do
     expect(lambda do
-      Google::APIClient::Service.new
+      Legacy::Google::APIClient::Service.new
     end).to raise_error(ArgumentError)
   end
 
   it 'should error out when called without an API version' do
     expect(lambda do
-      Google::APIClient::Service.new('foo')
+      Legacy::Google::APIClient::Service.new('foo')
     end).to raise_error(ArgumentError)
   end
 
   it 'should error out when the options hash is not a hash' do
     expect(lambda do
-      Google::APIClient::Service.new('foo', 'v1', 42)
+      Legacy::Google::APIClient::Service.new('foo', 'v1', 42)
     end).to raise_error(ArgumentError)
   end
 
@@ -52,7 +52,7 @@ RSpec.describe Google::APIClient::Service do
           [200, {}, '{}']
         end
       end
-      adsense = Google::APIClient::Service.new(
+      adsense = Legacy::Google::APIClient::Service.new(
         'adsense',
         'v1.3',
         {
@@ -73,7 +73,7 @@ RSpec.describe Google::APIClient::Service do
           [200, {}, '{}']
         end
       end
-      adsense = Google::APIClient::Service.new(
+      adsense = Legacy::Google::APIClient::Service.new(
         'adsense',
         'v1.3',
         {
@@ -92,7 +92,7 @@ RSpec.describe Google::APIClient::Service do
           [200, {}, '{}']
         end
       end
-      adsense = Google::APIClient::Service.new(
+      adsense = Legacy::Google::APIClient::Service.new(
         'adsense',
         'v1.3',
         {
@@ -107,12 +107,12 @@ RSpec.describe Google::APIClient::Service do
 
     describe 'with no connection' do
       before do
-        @adsense = Google::APIClient::Service.new('adsense', 'v1.3',
+        @adsense = Legacy::Google::APIClient::Service.new('adsense', 'v1.3',
           {:application_name => APPLICATION_NAME, :cache_store => nil})
       end
 
       it 'should return a resource when using a valid resource name' do
-        expect(@adsense.accounts).to be_a(Google::APIClient::Service::Resource)
+        expect(@adsense.accounts).to be_a(Legacy::Google::APIClient::Service::Resource)
       end
 
       it 'should throw an error when using an invalid resource name' do
@@ -123,7 +123,7 @@ RSpec.describe Google::APIClient::Service do
 
       it 'should return a request when using a valid method name' do
         req = @adsense.adclients.list
-        expect(req).to be_a(Google::APIClient::Service::Request)
+        expect(req).to be_a(Legacy::Google::APIClient::Service::Request)
         expect(req.method.id).to eq('adsense.adclients.list')
         expect(req.parameters).to be_nil
       end
@@ -136,7 +136,7 @@ RSpec.describe Google::APIClient::Service do
 
       it 'should return a valid request with parameters' do
         req = @adsense.adunits.list(:adClientId => '1')
-        expect(req).to be_a(Google::APIClient::Service::Request)
+        expect(req).to be_a(Legacy::Google::APIClient::Service::Request)
         expect(req.method.id).to eq('adsense.adunits.list')
         expect(req.parameters).not_to be_nil
         expect(req.parameters[:adClientId]).to eq('1')
@@ -153,7 +153,7 @@ RSpec.describe Google::APIClient::Service do
           [200, {}, '{}']
         end
       end
-      prediction = Google::APIClient::Service.new(
+      prediction = Legacy::Google::APIClient::Service.new(
         'prediction',
         'v1.5',
         {
@@ -174,7 +174,7 @@ RSpec.describe Google::APIClient::Service do
           [200, {}, '{}']
         end
       end
-      prediction = Google::APIClient::Service.new(
+      prediction = Legacy::Google::APIClient::Service.new(
         'prediction',
         'v1.5',
         {
@@ -190,13 +190,13 @@ RSpec.describe Google::APIClient::Service do
 
     describe 'with no connection' do
       before do
-        @prediction = Google::APIClient::Service.new('prediction', 'v1.5',
+        @prediction = Legacy::Google::APIClient::Service.new('prediction', 'v1.5',
           {:application_name => APPLICATION_NAME, :cache_store => nil})
       end
 
       it 'should return a valid request with a body' do
         req = @prediction.trainedmodels.insert(:project => '1').body({'id' => '1'})
-        expect(req).to be_a(Google::APIClient::Service::Request)
+        expect(req).to be_a(Legacy::Google::APIClient::Service::Request)
         expect(req.method.id).to eq('prediction.trainedmodels.insert')
         expect(req.body).to eq({'id' => '1'})
         expect(req.parameters).not_to be_nil
@@ -205,7 +205,7 @@ RSpec.describe Google::APIClient::Service do
 
       it 'should return a valid request with a body when using resource name' do
         req = @prediction.trainedmodels.insert(:project => '1').training({'id' => '1'})
-        expect(req).to be_a(Google::APIClient::Service::Request)
+        expect(req).to be_a(Legacy::Google::APIClient::Service::Request)
         expect(req.method.id).to eq('prediction.trainedmodels.insert')
         expect(req.training).to eq({'id' => '1'})
         expect(req.parameters).not_to be_nil
@@ -222,7 +222,7 @@ RSpec.describe Google::APIClient::Service do
         'description' => 'The best home movie ever made'
       }
       @file = File.expand_path('files/sample.txt', fixtures_path)
-      @media = Google::APIClient::UploadIO.new(@file, 'text/plain')
+      @media = Legacy::Google::APIClient::UploadIO.new(@file, 'text/plain')
     end
 
     it 'should make a valid call with an object body and media upload' do
@@ -232,7 +232,7 @@ RSpec.describe Google::APIClient::Service do
           [200, {}, '{}']
         end
       end
-      drive = Google::APIClient::Service.new(
+      drive = Legacy::Google::APIClient::Service.new(
         'drive',
         'v2',
         {
@@ -248,13 +248,13 @@ RSpec.describe Google::APIClient::Service do
 
     describe 'with no connection' do
       before do
-        @drive = Google::APIClient::Service.new('drive', 'v2',
+        @drive = Legacy::Google::APIClient::Service.new('drive', 'v2',
           {:application_name => APPLICATION_NAME, :cache_store => nil})
       end
 
       it 'should return a valid request with a body and media upload' do
         req = @drive.files.insert(:uploadType => 'multipart').body(@metadata).media(@media)
-        expect(req).to be_a(Google::APIClient::Service::Request)
+        expect(req).to be_a(Legacy::Google::APIClient::Service::Request)
         expect(req.method.id).to eq('drive.files.insert')
         expect(req.body).to eq(@metadata)
         expect(req.media).to eq(@media)
@@ -264,7 +264,7 @@ RSpec.describe Google::APIClient::Service do
 
       it 'should return a valid request with a body and media upload when using resource name' do
         req = @drive.files.insert(:uploadType => 'multipart').file(@metadata).media(@media)
-        expect(req).to be_a(Google::APIClient::Service::Request)
+        expect(req).to be_a(Legacy::Google::APIClient::Service::Request)
         expect(req.method.id).to eq('drive.files.insert')
         expect(req.file).to eq(@metadata)
         expect(req.media).to eq(@media)
@@ -276,7 +276,7 @@ RSpec.describe Google::APIClient::Service do
 
   describe 'with the Discovery API' do
     it 'should make a valid end-to-end request' do
-      discovery = Google::APIClient::Service.new('discovery', 'v1',
+      discovery = Legacy::Google::APIClient::Service.new('discovery', 'v1',
           {:application_name => APPLICATION_NAME, :authenticated => false,
            :cache_store => nil})
       result = discovery.apis.get_rest(:api => 'discovery', :version => 'v1').execute
@@ -288,13 +288,13 @@ RSpec.describe Google::APIClient::Service do
 end
 
 
-RSpec.describe Google::APIClient::Service::Result do
+RSpec.describe Legacy::Google::APIClient::Service::Result do
 
   describe 'with the plus API' do
     before do
-      @plus = Google::APIClient::Service.new('plus', 'v1',
+      @plus = Legacy::Google::APIClient::Service.new('plus', 'v1',
           {:application_name => APPLICATION_NAME, :cache_store => nil})
-      @reference = Google::APIClient::Reference.new({
+      @reference = Legacy::Google::APIClient::Reference.new({
         :api_method => @plus.activities.list.method,
         :parameters => {
           'userId' => 'me',
@@ -336,8 +336,8 @@ RSpec.describe Google::APIClient::Service::Result do
           }
           END_OF_STRING
         allow(@response).to receive(:body).and_return(@body)
-        base_result = Google::APIClient::Result.new(@reference, @response)
-        @result = Google::APIClient::Service::Result.new(@request, base_result)
+        base_result = Legacy::Google::APIClient::Result.new(@reference, @response)
+        @result = Legacy::Google::APIClient::Service::Result.new(@request, base_result)
       end
 
       it 'should indicate a successful response' do
@@ -368,7 +368,7 @@ RSpec.describe Google::APIClient::Service::Result do
       it 'should return the result data correctly' do
         expect(@result.data?).to be_truthy
         expect(@result.data.class.to_s).to eq(
-            'Google::APIClient::Schema::Plus::V1::ActivityFeed'
+            'Legacy::Google::APIClient::Schema::Plus::V1::ActivityFeed'
         )
         expect(@result.data.kind).to eq('plus#activityFeed')
         expect(@result.data.etag).to eq('FOO')
@@ -400,8 +400,8 @@ RSpec.describe Google::APIClient::Service::Result do
           }
           END_OF_STRING
         allow(@response).to receive(:body).and_return(@body)
-        base_result = Google::APIClient::Result.new(@reference, @response)
-        @result = Google::APIClient::Service::Result.new(@request, base_result)
+        base_result = Legacy::Google::APIClient::Result.new(@reference, @response)
+        @result = Legacy::Google::APIClient::Service::Result.new(@request, base_result)
       end
 
       it 'should not return a next page token' do
@@ -419,7 +419,7 @@ RSpec.describe Google::APIClient::Service::Result do
       it 'should return the result data correctly' do
         expect(@result.data?).to be_truthy
         expect(@result.data.class.to_s).to eq(
-            'Google::APIClient::Schema::Plus::V1::ActivityFeed'
+            'Legacy::Google::APIClient::Schema::Plus::V1::ActivityFeed'
         )
         expect(@result.data.kind).to eq('plus#activityFeed')
         expect(@result.data.etag).to eq('FOO')
@@ -451,8 +451,8 @@ RSpec.describe Google::APIClient::Service::Result do
          END_OF_STRING
         allow(@response).to receive(:body).and_return(@body)
         allow(@response).to receive(:status).and_return(400)
-        base_result = Google::APIClient::Result.new(@reference, @response)
-        @result = Google::APIClient::Service::Result.new(@request, base_result)
+        base_result = Legacy::Google::APIClient::Result.new(@reference, @response)
+        @result = Legacy::Google::APIClient::Service::Result.new(@request, base_result)
       end
 
       it 'should return error status correctly' do
@@ -473,8 +473,8 @@ RSpec.describe Google::APIClient::Service::Result do
         allow(@response).to receive(:body).and_return('')
         allow(@response).to receive(:status).and_return(204)
         allow(@response).to receive(:headers).and_return({})
-        base_result = Google::APIClient::Result.new(@reference, @response)
-        @result = Google::APIClient::Service::Result.new(@request, base_result)
+        base_result = Legacy::Google::APIClient::Result.new(@reference, @response)
+        @result = Legacy::Google::APIClient::Service::Result.new(@request, base_result)
       end
 
       it 'should indicate no data is available' do
@@ -492,7 +492,7 @@ RSpec.describe Google::APIClient::Service::Result do
   end
 end
 
-RSpec.describe Google::APIClient::Service::BatchRequest do
+RSpec.describe Legacy::Google::APIClient::Service::BatchRequest do
   
   include ConnectionHelpers
   
@@ -503,7 +503,7 @@ RSpec.describe Google::APIClient::Service::BatchRequest do
           [500, {'Content-Type' => 'application/json'}, '{}']
         end
       end
-      @discovery = Google::APIClient::Service.new('discovery', 'v1',
+      @discovery = Legacy::Google::APIClient::Service.new('discovery', 'v1',
           {:application_name => APPLICATION_NAME, :authorization => nil,
            :cache_store => nil, :connection => @conn})
       @calls = [
@@ -522,7 +522,7 @@ RSpec.describe Google::APIClient::Service::BatchRequest do
   
   describe 'with the discovery API' do
     before do
-      @discovery = Google::APIClient::Service.new('discovery', 'v1',
+      @discovery = Legacy::Google::APIClient::Service.new('discovery', 'v1',
           {:application_name => APPLICATION_NAME, :authorization => nil,
            :cache_store => nil})
     end

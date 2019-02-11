@@ -21,13 +21,13 @@ require 'faraday'
 require 'multi_json'
 require 'compat/multi_json'
 require 'signet/oauth_1/client'
-require 'google/api_client'
+require 'legacy/google/api_client'
 
 fixtures_path = File.expand_path('../../../fixtures', __FILE__)
 
-RSpec.describe Google::APIClient do
+RSpec.describe Legacy::Google::APIClient do
   include ConnectionHelpers
-  CLIENT = Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
+  CLIENT = Legacy::Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
 
   after do
     # Reset client to not-quite-pristine state
@@ -37,17 +37,17 @@ RSpec.describe Google::APIClient do
 
   it 'should raise a type error for bogus authorization' do
     expect(lambda do
-      Google::APIClient.new(:application_name => 'API Client Tests', :authorization => 42)
+      Legacy::Google::APIClient.new(:application_name => 'API Client Tests', :authorization => 42)
     end).to raise_error(TypeError)
   end
 
   it 'should not be able to retrieve the discovery document for a bogus API' do
     expect(lambda do
       CLIENT.discovery_document('bogus')
-    end).to raise_error(Google::APIClient::TransmissionError)
+    end).to raise_error(Legacy::Google::APIClient::TransmissionError)
     expect(lambda do
       CLIENT.discovered_api('bogus')
-    end).to raise_error(Google::APIClient::TransmissionError)
+    end).to raise_error(Legacy::Google::APIClient::TransmissionError)
   end
 
   it 'should raise an error for bogus services' do
@@ -77,7 +77,7 @@ RSpec.describe Google::APIClient do
       zoo_json = File.join(fixtures_path, 'files', 'zoo.json')
       contents = File.open(zoo_json, 'rb') { |io| io.read }
       api = CLIENT.register_discovery_document('zoo', 'v1', contents)
-      expect(api).to be_kind_of(Google::APIClient::API)
+      expect(api).to be_kind_of(Legacy::Google::APIClient::API)
     end
   end
   
@@ -275,7 +275,7 @@ RSpec.describe Google::APIClient do
     it 'should allow modification to the base URIs for testing purposes' do
       # Using a new client instance here to avoid caching rebased discovery doc
       prediction_rebase =
-        Google::APIClient.new(:application_name => 'API Client Tests').discovered_api('prediction', 'v1.2')
+        Legacy::Google::APIClient.new(:application_name => 'API Client Tests').discovered_api('prediction', 'v1.2')
       prediction_rebase.method_base =
         'https://testing-domain.example.com/prediction/v1.2/'
 
@@ -365,7 +365,7 @@ RSpec.describe Google::APIClient do
           @prediction.training.insert,
           {'data' => '12345'}
         )
-      end).to raise_error(Google::APIClient::ClientError)
+      end).to raise_error(Legacy::Google::APIClient::ClientError)
     end
 
     it 'should not be able to execute improperly authorized requests' do
@@ -376,7 +376,7 @@ RSpec.describe Google::APIClient do
           @prediction.training.insert,
           {'data' => '12345'}
         )
-      end).to raise_error(Google::APIClient::ClientError)
+      end).to raise_error(Legacy::Google::APIClient::ClientError)
     end
 
     it 'should correctly handle unnamed parameters' do

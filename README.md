@@ -37,7 +37,7 @@ require 'google/api_client/client_secrets'
 require 'google/api_client/auth/installed_app'
 
 # Initialize the client.
-client = Google::APIClient.new(
+client = Legacy::Google::APIClient.new(
   :application_name => 'Example Ruby application',
   :application_version => '1.0.0'
 )
@@ -48,11 +48,11 @@ client = Google::APIClient.new(
 plus = client.discovered_api('plus')
 
 # Load client secrets from your client_secrets.json.
-client_secrets = Google::APIClient::ClientSecrets.load
+client_secrets = Legacy::Google::APIClient::ClientSecrets.load
 
 # Run installed application flow. Check the samples for a more
 # complete example that saves the credentials between runs.
-flow = Google::APIClient::InstalledAppFlow.new(
+flow = Legacy::Google::APIClient::InstalledAppFlow.new(
   :client_id => client_secrets.client_id,
   :client_secret => client_secrets.client_secret,
   :scope => ['https://www.googleapis.com/auth/plus.me']
@@ -118,7 +118,7 @@ client.execute(...)
 This is simpler API to use than in previous versions, although that is still available:
 
 ```ruby
-key = Google::APIClient::KeyUtils.load_from_pkcs12('client.p12', 'notasecret')
+key = Legacy::Google::APIClient::KeyUtils.load_from_pkcs12('client.p12', 'notasecret')
 client.authorization = Signet::OAuth2::Client.new(
   :token_credential_uri => 'https://accounts.google.com/o/oauth2/token',
   :audience => 'https://accounts.google.com/o/oauth2/token',
@@ -143,16 +143,16 @@ The default value for retries is 0, but will be enabled by default in future rel
 
 ### Batching Requests
 
-Some Google APIs support batching requests into a single HTTP request. Use `Google::APIClient::BatchRequest`
+Some Google APIs support batching requests into a single HTTP request. Use `Legacy::Google::APIClient::BatchRequest`
 to bundle multiple requests together.
 
 Example:
 
 ```ruby
-client = Google::APIClient.new
+client = Legacy::Google::APIClient.new
 urlshortener = client.discovered_api('urlshortener')
 
-batch = Google::APIClient::BatchRequest.new do |result|
+batch = Legacy::Google::APIClient::BatchRequest.new do |result|
     puts result.data
 end
 
@@ -173,13 +173,13 @@ end
 
 ### Media Upload
 
-For APIs that support file uploads, use `Google::APIClient::UploadIO` to load the stream. Both multipart and resumable
+For APIs that support file uploads, use `Legacy::Google::APIClient::UploadIO` to load the stream. Both multipart and resumable
 uploads can be used. For example, to upload a file to Google Drive using multipart
 
 ```ruby
 drive = client.discovered_api('drive', 'v2')
 
-media = Google::APIClient::UploadIO.new('mymovie.m4v', 'video/mp4')
+media = Legacy::Google::APIClient::UploadIO.new('mymovie.m4v', 'video/mp4')
 metadata = {
     'title' => 'My movie',
     'description' => 'The best home movie ever made'

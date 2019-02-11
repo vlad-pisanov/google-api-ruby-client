@@ -14,21 +14,21 @@
 
 require 'spec_helper'
 
-require 'google/api_client'
+require 'legacy/google/api_client'
 
 fixtures_path = File.expand_path('../../../fixtures', __FILE__)
 
-RSpec.describe Google::APIClient::UploadIO do
+RSpec.describe Legacy::Google::APIClient::UploadIO do
   it 'should reject invalid file paths' do
     expect(lambda do
-      media = Google::APIClient::UploadIO.new('doesnotexist', 'text/plain')
+      media = Legacy::Google::APIClient::UploadIO.new('doesnotexist', 'text/plain')
     end).to raise_error
   end
 
   describe 'with a file' do
     before do
       @file = File.expand_path('files/sample.txt', fixtures_path)
-      @media = Google::APIClient::UploadIO.new(@file, 'text/plain')
+      @media = Legacy::Google::APIClient::UploadIO.new(@file, 'text/plain')
     end
 
     it 'should report the correct file length' do
@@ -43,7 +43,7 @@ RSpec.describe Google::APIClient::UploadIO do
   describe 'with StringIO' do
     before do
       @content = "hello world"
-      @media = Google::APIClient::UploadIO.new(StringIO.new(@content), 'text/plain', 'test.txt')
+      @media = Legacy::Google::APIClient::UploadIO.new(StringIO.new(@content), 'text/plain', 'test.txt')
     end
 
     it 'should report the correct file length' do
@@ -56,10 +56,10 @@ RSpec.describe Google::APIClient::UploadIO do
   end
 end
 
-RSpec.describe Google::APIClient::RangedIO do
+RSpec.describe Legacy::Google::APIClient::RangedIO do
   before do
     @source = StringIO.new("1234567890abcdef")
-    @io = Google::APIClient::RangedIO.new(@source, 1, 5)
+    @io = Legacy::Google::APIClient::RangedIO.new(@source, 1, 5)
   end
   
   it 'should return the correct range when read entirely' do
@@ -104,8 +104,8 @@ RSpec.describe Google::APIClient::RangedIO do
     
 end
 
-RSpec.describe Google::APIClient::ResumableUpload do
-  CLIENT = Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
+RSpec.describe Legacy::Google::APIClient::ResumableUpload do
+  CLIENT = Legacy::Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
 
   after do
     # Reset client to not-quite-pristine state
@@ -116,8 +116,8 @@ RSpec.describe Google::APIClient::ResumableUpload do
   before do
     @drive = CLIENT.discovered_api('drive', 'v2')
     @file = File.expand_path('files/sample.txt', fixtures_path)
-    @media = Google::APIClient::UploadIO.new(@file, 'text/plain')
-    @uploader = Google::APIClient::ResumableUpload.new(
+    @media = Legacy::Google::APIClient::UploadIO.new(@file, 'text/plain')
+    @uploader = Legacy::Google::APIClient::ResumableUpload.new(
       :media => @media,
       :api_method => @drive.files.insert,
       :uri => 'https://www.googleapis.com/upload/drive/v1/files/12345')
@@ -171,7 +171,7 @@ RSpec.describe Google::APIClient::ResumableUpload do
   end
 
   def mock_result(status, headers = {})
-    reference = Google::APIClient::Reference.new(:api_method => @drive.files.insert)
+    reference = Legacy::Google::APIClient::Reference.new(:api_method => @drive.files.insert)
     double('result', :status => status, :headers => headers, :reference => reference)
   end
 

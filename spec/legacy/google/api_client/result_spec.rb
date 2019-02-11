@@ -14,16 +14,16 @@
 
 require 'spec_helper'
 
-require 'google/api_client'
+require 'legacy/google/api_client'
 
-RSpec.describe Google::APIClient::Result do
-  CLIENT = Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
+RSpec.describe Legacy::Google::APIClient::Result do
+  CLIENT = Legacy::Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
 
   describe 'with the plus API' do
     before do
       CLIENT.authorization = nil
       @plus = CLIENT.discovered_api('plus', 'v1')
-      @reference = Google::APIClient::Reference.new({
+      @reference = Legacy::Google::APIClient::Reference.new({
         :api_method => @plus.activities.list,
         :parameters => {
           'userId' => 'me',
@@ -65,7 +65,7 @@ RSpec.describe Google::APIClient::Result do
           }
           END_OF_STRING
         )
-        @result = Google::APIClient::Result.new(@reference, @response)
+        @result = Legacy::Google::APIClient::Result.new(@reference, @response)
       end
 
       it 'should indicate a successful response' do
@@ -91,7 +91,7 @@ RSpec.describe Google::APIClient::Result do
       it 'should return the result data correctly' do
         expect(@result.data?).to be_truthy
         expect(@result.data.class.to_s).to eq(
-            'Google::APIClient::Schema::Plus::V1::ActivityFeed'
+            'Legacy::Google::APIClient::Schema::Plus::V1::ActivityFeed'
         )
         expect(@result.data.kind).to eq('plus#activityFeed')
         expect(@result.data.etag).to eq('FOO')
@@ -124,7 +124,7 @@ RSpec.describe Google::APIClient::Result do
           }
           END_OF_STRING
         )
-        @result = Google::APIClient::Result.new(@reference, @response)
+        @result = Legacy::Google::APIClient::Result.new(@reference, @response)
       end
 
       it 'should not return a next page token' do
@@ -138,7 +138,7 @@ RSpec.describe Google::APIClient::Result do
       it 'should return the result data correctly' do
         expect(@result.data?).to be_truthy
         expect(@result.data.class.to_s).to eq(
-            'Google::APIClient::Schema::Plus::V1::ActivityFeed'
+            'Legacy::Google::APIClient::Schema::Plus::V1::ActivityFeed'
         )
         expect(@result.data.kind).to eq('plus#activityFeed')
         expect(@result.data.etag).to eq('FOO')
@@ -171,7 +171,7 @@ RSpec.describe Google::APIClient::Result do
          END_OF_STRING
         )
         allow(@response).to receive(:status).and_return(400)
-        @result = Google::APIClient::Result.new(@reference, @response)
+        @result = Legacy::Google::APIClient::Result.new(@reference, @response)
       end
 
       it 'should return error status correctly' do
@@ -188,7 +188,7 @@ RSpec.describe Google::APIClient::Result do
         allow(@response).to receive(:body).and_return('')
         allow(@response).to receive(:status).and_return(204)
         allow(@response).to receive(:headers).and_return({})
-        @result = Google::APIClient::Result.new(@reference, @response)
+        @result = Legacy::Google::APIClient::Result.new(@reference, @response)
       end
 
       it 'should indicate no data is available' do

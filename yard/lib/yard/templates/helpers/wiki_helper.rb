@@ -262,7 +262,7 @@ module YARD
       # @param [CodeObjects::Base] object the object to get an anchor for
       # @return [String] the anchor for a specific object
       def anchor_for(object)
-        # Method:_Google::APIClient#execute!
+        # Method:_Legacy::Google::APIClient#execute!
         case object
         when CodeObjects::MethodObject
           if object.scope == :instance

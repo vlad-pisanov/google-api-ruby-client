@@ -14,13 +14,13 @@
 
 require 'spec_helper'
 
-require 'google/api_client'
+require 'legacy/google/api_client'
 
-RSpec.describe Google::APIClient::Request do
-  CLIENT = Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
+RSpec.describe Legacy::Google::APIClient::Request do
+  CLIENT = Legacy::Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
 
   it 'should normalize parameter names to strings' do
-    request = Google::APIClient::Request.new(:uri => 'https://www.google.com', :parameters => {
+    request = Legacy::Google::APIClient::Request.new(:uri => 'https://www.google.com', :parameters => {
       :a => '1', 'b' => '2'
     })
     expect(request.parameters['a']).to eq('1')

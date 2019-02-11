@@ -16,7 +16,7 @@ require 'spec_helper'
 
 require 'faraday'
 require 'signet/oauth_1/client'
-require 'google/api_client'
+require 'legacy/google/api_client'
 
 shared_examples_for 'configurable user agent' do
   include ConnectionHelpers
@@ -54,18 +54,18 @@ shared_examples_for 'configurable user agent' do
   end
 end
 
-RSpec.describe Google::APIClient do
+RSpec.describe Legacy::Google::APIClient do
   include ConnectionHelpers
 
-  let(:client) { Google::APIClient.new(:application_name => 'API Client Tests') }
+  let(:client) { Legacy::Google::APIClient.new(:application_name => 'API Client Tests') }
 
   it "should pass the faraday options provided on initialization to FaraDay configuration block" do
-    client = Google::APIClient.new(faraday_option: {timeout: 999})
+    client = Legacy::Google::APIClient.new(faraday_option: {timeout: 999})
     expect(client.connection.options.timeout).to be == 999
   end
 
   it 'should make its version number available' do
-    expect(Google::APIClient::VERSION::STRING).to be_instance_of(String)
+    expect(Legacy::Google::APIClient::VERSION::STRING).to be_instance_of(String)
   end
 
   it 'should default to OAuth 2' do

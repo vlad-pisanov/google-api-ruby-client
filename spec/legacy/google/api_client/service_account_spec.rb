@@ -14,17 +14,17 @@
 
 require 'spec_helper'
 
-require 'google/api_client'
+require 'legacy/google/api_client'
 
 fixtures_path = File.expand_path('../../../fixtures', __FILE__)
 
-RSpec.describe Google::APIClient::KeyUtils do
+RSpec.describe Legacy::Google::APIClient::KeyUtils do
   it 'should read PKCS12 files from the filesystem' do
     if RUBY_PLATFORM == 'java' && RUBY_VERSION.start_with?('1.8')
       pending "Reading from PKCS12 not supported on jruby 1.8.x"
     end
     path =  File.expand_path('files/privatekey.p12', fixtures_path)
-    key = Google::APIClient::KeyUtils.load_from_pkcs12(path, 'notasecret')
+    key = Legacy::Google::APIClient::KeyUtils.load_from_pkcs12(path, 'notasecret')
     expect(key).not_to eq(nil)
   end
 
@@ -34,26 +34,26 @@ RSpec.describe Google::APIClient::KeyUtils do
     end
     path =  File.expand_path('files/privatekey.p12', fixtures_path)
     content = File.read(path)
-    key = Google::APIClient::KeyUtils.load_from_pkcs12(content, 'notasecret')
+    key = Legacy::Google::APIClient::KeyUtils.load_from_pkcs12(content, 'notasecret')
     expect(key).not_to eq(nil)
   end
 
   it 'should read PEM files from the filesystem' do
     path =  File.expand_path('files/secret.pem', fixtures_path)
-    key = Google::APIClient::KeyUtils.load_from_pem(path, 'notasecret')
+    key = Legacy::Google::APIClient::KeyUtils.load_from_pem(path, 'notasecret')
     expect(key).not_to eq(nil)
   end
 
   it 'should read PEM files from loaded files' do
     path =  File.expand_path('files/secret.pem', fixtures_path)
     content = File.read(path)
-    key = Google::APIClient::KeyUtils.load_from_pem(content, 'notasecret')
+    key = Legacy::Google::APIClient::KeyUtils.load_from_pem(content, 'notasecret')
     expect(key).not_to eq(nil)
   end
 
 end
 
-RSpec.describe Google::APIClient::JWTAsserter do
+RSpec.describe Legacy::Google::APIClient::JWTAsserter do
   include ConnectionHelpers
 
   before do
@@ -61,7 +61,7 @@ RSpec.describe Google::APIClient::JWTAsserter do
   end
 
   it 'should generate valid JWTs' do
-    asserter = Google::APIClient::JWTAsserter.new('client1', 'scope1 scope2', @key)
+    asserter = Legacy::Google::APIClient::JWTAsserter.new('client1', 'scope1 scope2', @key)
     jwt = asserter.to_authorization.to_jwt
     expect(jwt).not_to eq(nil)
 
@@ -84,7 +84,7 @@ RSpec.describe Google::APIClient::JWTAsserter do
         }']
       end
     end
-    asserter = Google::APIClient::JWTAsserter.new('client1', 'scope1 scope2', @key)
+    asserter = Legacy::Google::APIClient::JWTAsserter.new('client1', 'scope1 scope2', @key)
     auth = asserter.authorize('user1@email.com', { :connection => conn })
     expect(auth).not_to eq(nil?)
     expect(auth.person).to eq('user1@email.com')
@@ -104,7 +104,7 @@ RSpec.describe Google::APIClient::JWTAsserter do
         }']
       end
     end
-    asserter = Google::APIClient::JWTAsserter.new('client1', 'scope1 scope2', @key)
+    asserter = Legacy::Google::APIClient::JWTAsserter.new('client1', 'scope1 scope2', @key)
     auth = asserter.authorize(nil, { :connection => conn })
     expect(auth).not_to eq(nil?)
     expect(auth.access_token).to eq("1/abcdef1234567890")
@@ -134,7 +134,7 @@ RSpec.describe Google::APIClient::JWTAsserter do
         }']
       end
     end
-    asserter = Google::APIClient::JWTAsserter.new('client1', 'scope1 scope2', @key)
+    asserter = Legacy::Google::APIClient::JWTAsserter.new('client1', 'scope1 scope2', @key)
     auth = asserter.authorize(nil, { :connection => conn })
     expect(auth).not_to eq(nil?)
     expect(auth.access_token).to eq("1/abcdef1234567890")
@@ -146,7 +146,7 @@ RSpec.describe Google::APIClient::JWTAsserter do
   end
 end
 
-RSpec.describe Google::APIClient::ComputeServiceAccount do
+RSpec.describe Legacy::Google::APIClient::ComputeServiceAccount do
   include ConnectionHelpers
 
   it 'should query metadata server' do
@@ -160,7 +160,7 @@ RSpec.describe Google::APIClient::ComputeServiceAccount do
         }']
       end
     end
-    service_account = Google::APIClient::ComputeServiceAccount.new
+    service_account = Legacy::Google::APIClient::ComputeServiceAccount.new
     auth = service_account.fetch_access_token!({ :connection => conn })
     expect(auth).not_to eq(nil?)
     expect(auth["access_token"]).to eq("1/abcdef1234567890")

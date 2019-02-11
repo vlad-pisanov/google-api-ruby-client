@@ -13,10 +13,10 @@
 # limitations under the License.
 
 require 'spec_helper'
-require 'google/api_client'
+require 'legacy/google/api_client'
 
-RSpec.describe Google::APIClient::BatchRequest do
-  CLIENT = Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
+RSpec.describe Legacy::Google::APIClient::BatchRequest do
+  CLIENT = Legacy::Google::APIClient.new(:application_name => 'API Client Tests') unless defined?(CLIENT)
 
   after do
     # Reset client to not-quite-pristine state
@@ -25,15 +25,15 @@ RSpec.describe Google::APIClient::BatchRequest do
   end
 
   it 'should raise an error if making an empty batch request' do
-    batch = Google::APIClient::BatchRequest.new
+    batch = Legacy::Google::APIClient::BatchRequest.new
 
     expect(lambda do
       CLIENT.execute(batch)
-    end).to raise_error(Google::APIClient::BatchError)
+    end).to raise_error(Legacy::Google::APIClient::BatchError)
   end
 
   it 'should allow query parameters in batch requests' do
-    batch = Google::APIClient::BatchRequest.new
+    batch = Legacy::Google::APIClient::BatchRequest.new
     batch.add(:uri => 'https://example.com', :parameters => {
       'a' => '12345'
     })
@@ -70,7 +70,7 @@ RSpec.describe Google::APIClient::BatchRequest do
         block_called = 0
         ids = ['first_call', 'second_call']
         expected_ids = ids.clone
-        batch = Google::APIClient::BatchRequest.new do |result|
+        batch = Legacy::Google::APIClient::BatchRequest.new do |result|
           block_called += 1
           expect(result.status).to eq(200)
           expect(expected_ids).to include(result.response.call_id)
@@ -85,7 +85,7 @@ RSpec.describe Google::APIClient::BatchRequest do
       end
 
       it 'should execute both when using individual callbacks' do
-        batch = Google::APIClient::BatchRequest.new
+        batch = Legacy::Google::APIClient::BatchRequest.new
 
         call1_returned, call2_returned = false, false
         batch.add(@call1) do |result|
@@ -103,12 +103,12 @@ RSpec.describe Google::APIClient::BatchRequest do
       end
 
       it 'should raise an error if using the same call ID more than once' do
-        batch = Google::APIClient::BatchRequest.new
+        batch = Legacy::Google::APIClient::BatchRequest.new
 
         expect(lambda do
           batch.add(@call1, 'my_id')
           batch.add(@call2, 'my_id')
-        end).to raise_error(Google::APIClient::BatchError)
+        end).to raise_error(Legacy::Google::APIClient::BatchError)
       end
     end
 
@@ -135,7 +135,7 @@ RSpec.describe Google::APIClient::BatchRequest do
         block_called = 0
         ids = ['first_call', 'second_call']
         expected_ids = ids.clone
-        batch = Google::APIClient::BatchRequest.new do |result|
+        batch = Legacy::Google::APIClient::BatchRequest.new do |result|
           block_called += 1
           expect(expected_ids).to include(result.response.call_id)
           expected_ids.delete(result.response.call_id)
@@ -155,7 +155,7 @@ RSpec.describe Google::APIClient::BatchRequest do
       end
 
       it 'should execute both when using individual callbacks' do
-        batch = Google::APIClient::BatchRequest.new
+        batch = Legacy::Google::APIClient::BatchRequest.new
 
         call1_returned, call2_returned = false, false
         batch.add(@call1) do |result|
@@ -231,10 +231,10 @@ RSpec.describe Google::APIClient::BatchRequest do
       end
 
       it 'should convert to a correct HTTP request' do
-        batch = Google::APIClient::BatchRequest.new { |result| }
+        batch = Legacy::Google::APIClient::BatchRequest.new { |result| }
         batch.add(@call1, '1').add(@call2, '2')
         request = batch.to_env(CLIENT.connection)
-        boundary = Google::APIClient::BatchRequest::BATCH_BOUNDARY
+        boundary = Legacy::Google::APIClient::BatchRequest::BATCH_BOUNDARY
         expect(request[:method].to_s.downcase).to eq('post')
         expect(request[:url].to_s).to eq('https://www.googleapis.com/batch')
         expect(request[:request_headers]['Content-Type']).to eq("multipart/mixed;boundary=#{boundary}")

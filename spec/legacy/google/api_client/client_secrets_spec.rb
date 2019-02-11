@@ -16,15 +16,15 @@
 
 require 'spec_helper'
 
-require 'google/api_client/client_secrets'
+require 'legacy/google/api_client/client_secrets'
 
 FIXTURES_PATH = File.expand_path('../../../fixtures', __FILE__)
 
-RSpec.describe Google::APIClient::ClientSecrets do
+RSpec.describe Legacy::Google::APIClient::ClientSecrets do
   
   context 'with JSON file' do
     let(:file) { File.join(FIXTURES_PATH, 'files', 'client_secrets.json') }
-    subject(:secrets) { Google::APIClient::ClientSecrets.load(file)}
+    subject(:secrets) { Legacy::Google::APIClient::ClientSecrets.load(file)}
   
     it 'should load the correct client ID' do
       expect(secrets.client_id).to be == '898243283568.apps.googleusercontent.com'

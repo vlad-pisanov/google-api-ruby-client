@@ -18,7 +18,7 @@ the following Google APIs.
 WIKI
     preferred_apis = {}
     require 'google/api_client'
-    client = Google::APIClient.new
+    client = Legacy::Google::APIClient.new
     for api in client.discovered_apis
       if !preferred_apis.has_key?(api.name)
         preferred_apis[api.name] = api

@@ -15,9 +15,9 @@
 
 require 'spec_helper'
 
-require 'google/api_client'
+require 'legacy/google/api_client'
 
-RSpec.describe Google::APIClient::Gzip do
+RSpec.describe Legacy::Google::APIClient::Gzip do
 
   def create_connection(&block)
     Faraday.new do |b|
@@ -59,7 +59,7 @@ RSpec.describe Google::APIClient::Gzip do
   describe 'with API Client' do
 
     before do
-      @client = Google::APIClient.new(:application_name => 'test')
+      @client = Legacy::Google::APIClient.new(:application_name => 'test')
       @client.authorization = nil
     end
     
