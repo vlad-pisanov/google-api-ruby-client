@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.join(File.dirname(__FILE__), 'lib/google/api_client', 'version')
+require File.join(File.dirname(__FILE__), 'lib/legacy/google/api_client', 'version')
 
 Gem::Specification.new do |s|
   s.name = "google-api-client"
