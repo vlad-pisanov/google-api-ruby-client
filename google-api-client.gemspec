@@ -2,7 +2,7 @@
 require File.join(File.dirname(__FILE__), 'lib/legacy/google/api_client', 'version')
 
 Gem::Specification.new do |s|
-  s.name = "google-api-client"
+  s.name = "legacy-google-api-client"
   s.version = Legacy::Google::APIClient::VERSION::STRING
 
   s.required_rubygems_version = ">= 1.3.5"
