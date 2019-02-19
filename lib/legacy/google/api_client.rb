@@ -17,7 +17,7 @@ require 'faraday'
 require 'multi_json'
 require 'compat/multi_json'
 require 'stringio'
-require 'retriable'
+require 'legacy/retriable'
 
 require 'legacy/google/api_client/version'
 require 'legacy/google/api_client/logging'
@@ -635,7 +635,7 @@ module Legacy
         tries = 1 + (options[:retries] || self.retries)
         attempt = 0
   
-        Retriable.retriable :tries => tries,
+        Legacy::Retriable.legacy_retriable :tries => tries,
                             :on => [TransmissionError],
                             :on_retry => client_error_handler,
                             :interval => lambda {|attempts| (2 ** attempts) + rand} do
@@ -644,7 +644,7 @@ module Legacy
           # This 2nd level retriable only catches auth errors, and supports 1 retry, which allows
           # auth to be re-attempted without having to retry all sorts of other failures like
           # NotFound, etc
-          Retriable.retriable :tries => ((expired_auth_retry || tries > 1) && attempt == 1) ? 2 : 1,
+          Legacy::Retriable.legacy_retriable :tries => ((expired_auth_retry || tries > 1) && attempt == 1) ? 2 : 1,
                               :on => [AuthorizationError],
                               :on_retry => authorization_error_handler(request.authorization) do
             result = request.send(connection, true)
